@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema(
             type: Array,
             default: [],
         },
-        applications: {
+        jobs: {
             type: Array,
             default: [],
         }
