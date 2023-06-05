@@ -9,8 +9,18 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from 'url';
 import authRoutes from "./routes/auth.js";
-import userRoutes from "./routes/users.js "
+import authCompRoutes from "./routes/authcomp.js";
+import userRoutes from "./routes/users.js ";
+import resumeRoutes from "./routes/resumes.js";
+import companyRoutes from "./routes/companies.js";
+import jobRoutes from "./routes/jobs.js";
+import coverLetterRoutes from "./routes/coverletters.js";
 import { register } from "./controllers/auth.js";
+import { registerCompany } from './controllers/authComp.js';
+import { createResume } from "./controllers/resumes.js"
+import { createJob } from './controllers/jobs.js';
+import { createCoverLetter } from "./controllers/coverletters.js"
+import { verifyToken } from './middleware/auth.js';
 
 //Configurations
 
@@ -42,10 +52,19 @@ const upload = multer({ storage });
 
 //ROUTES WITH FILES 
 app.post("/auth/register", upload.single("picture"), register); //middleware before running the endpoint, register controller
+app.post("/authcomp/registerCompany", upload.single("picture"), registerCompany); //mandatory?
 
 //ROUTES
 app.use("/auth", authRoutes);
+app.use("/authcomp", authCompRoutes);
 app.use("/users", userRoutes);
+app.use("/companies", companyRoutes);
+app.use("/resumes", resumeRoutes);
+app.post("/resumes", verifyToken, createResume)
+app.use("/coverletters", coverLetterRoutes);
+app.post("/coverletters", verifyToken, createCoverLetter)
+app.use("/jobs", jobRoutes);
+app.post("/jobs", verifyToken, createJob)
 
 //MONGOOSE
 

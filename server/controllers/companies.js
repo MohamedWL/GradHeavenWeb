@@ -1,28 +1,28 @@
-import User from "../models/User.js";
+import Company from "../models/Company.js";
 
 //READ
-export const getUser = async (req, res) => {
+export const getCompany = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findById(id);
-        req.status(200).json(user);
+        const company = await Company.findById(id);
+        req.status(200).json(company);
     } catch (err) {
         req.status(404).json({ message: err.message });
     }
 }
 
-export const getUserJobs = async (req, res) => {
+export const getCompanyJobs = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findById(id);
+        const company = await Company.findById(id);
 
         const jobs = await Promise.all(
-            user.jobs.map((id) => User.findById(id))
+            company.jobs.map((id) => Company.findById(id))
         );
 
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expirationDate, picturePath }) => {
-                return { _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expirationDate, picturePath };
+            ({ _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath }) => {
+                return { _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath };
             }
         );
         req.status(200).json(formattedJobs);
@@ -54,27 +54,27 @@ export const getUserJobs = async (req, res) => {
 //update
 
 
-export const addRemoveSavedJobs = async (req, res) => {
+export const addRemoveCompanyJobs = async (req, res) => {
     try {
         const { id, jobId } = req.params;
-        const user = User.findById(id);
-        const job = await User.findById(jobId);
-        if (user.jobs.includes(jobId)) {
-            user.jobs = user.jobs.filter((id) => id !== jobId);
+        const company = Company.findById(id);
+        const job = await Company.findById(jobId);
+        if (company.jobs.includes(jobId)) {
+            company.jobs = company.jobs.filter((id) => id !== jobId);
             job.jobs = job.jobs.filter((id) => id !== id); //we check if the id correspond and we remove them if so
         } else {
-            user.jobs.push(jobId);
+            company.jobs.push(jobId);
             job.jobs.push(id);
         }
-        await user.save();
+        await company.save();
         await job.save();
 
         const jobs = await Promise.all(
-            user.jobs.map((id) => User.findById(id))
+            company.jobs.map((id) => Company.findById(id))
         );
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expirationDate, picturePath }) => {
-                return { _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expirationDate, picturePath };
+            ({ _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath }) => {
+                return { _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath };
             }
         );
         req.status(200).json(formattedJobs);
