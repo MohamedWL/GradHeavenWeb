@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema(
             min: 2,
             max: 50,
         },
+        birthday: {
+            type: Date,
+            required: true,
+        },
         email: {
             type: String,
             required: true,

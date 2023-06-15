@@ -21,6 +21,12 @@ import { createResume } from "./controllers/resumes.js"
 import { createJob } from './controllers/jobs.js';
 import { createCoverLetter } from "./controllers/coverletters.js"
 import { verifyToken } from './middleware/auth.js';
+import Company from "./models/Company.js"
+import CoverLetter from "./models/CoverLetter.js"
+import Job from "./models/Job.js"
+import Resume from "./models/Resume.js"
+import User from "./models/User.js"
+import { companies, resumes, users, jobs, coverletters } from './data/index.js';
 
 //Configurations
 
@@ -74,6 +80,12 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,
 }).then(() => {
     app.listen(PORT, () => console.log(`Server port: ${PORT}`));
+    /*User.insertMany(users);
+    Resume.insertMany(resumes);
+    Company.insertMany(companies);
+    Job.insertMany(jobs);
+    CoverLetter.insertMany(coverletters);*/
+
 }).catch((error) => console.log(`${error} did not connect`));
 
 

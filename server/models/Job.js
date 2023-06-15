@@ -15,6 +15,11 @@ const JobSchema = new mongoose.Schema(
             required: true,
             min: 5,
         },
+        location: {
+            type: String,
+            required: true,
+            min: 2,
+        },
         aboutUs: {
             type: String,
             min: 2,
@@ -27,13 +32,20 @@ const JobSchema = new mongoose.Schema(
             type: String,
             min: 5,
         },
+        advantages: {
+            type: String,
+        },
         picturePath: {
             type: String,
             default: "",
         },
         expiringDate: {
             type: Date,
-        }
+        },
+        applicants: {
+            type: Array,
+            default: [],
+        },
     }, { timestamps: true }
 );
 

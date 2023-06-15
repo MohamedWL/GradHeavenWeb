@@ -5,7 +5,7 @@ import User from "../models/User.js";
 
 export const createResume = async (req, res) => {
     try {
-        const { userId, firstName, lastName, email, phoneNumber, location, externalLinks, education, skills, domainSkills, experience, aboutMe, references } = req.body;
+        const { userId, firstName, lastName, email, phoneNumber, location, externalLinks, education, skills, domainSkills, experience, aboutMe, references, userPicturePath } = req.body;
         const user = await User.findById(userId);
         const newResume = new Resume({
             userId,
@@ -21,6 +21,7 @@ export const createResume = async (req, res) => {
             experience,
             aboutMe,
             references,
+            userPicturePath,
         })
         await newResume.save();
         const resume = await Resume.find();

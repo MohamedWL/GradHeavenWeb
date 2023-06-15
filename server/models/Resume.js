@@ -51,6 +51,10 @@ const ResumeSchema = new mongoose.Schema(
         references: {
             type: String,
             min: 5,
+        },
+        userPicturePath: {
+            type: String,
+            default: "",
         }
     }, { timestamps: true }
 );

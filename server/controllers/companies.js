@@ -21,8 +21,8 @@ export const getCompanyJobs = async (req, res) => {
         );
 
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath }) => {
-                return { _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath };
+            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants }) => {
+                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants };
             }
         );
         req.status(200).json(formattedJobs);
@@ -73,8 +73,8 @@ export const addRemoveCompanyJobs = async (req, res) => {
             company.jobs.map((id) => Company.findById(id))
         );
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath }) => {
-                return { _id, companyId, jobTitle, jobDescription, aboutUs, requirements, otherSkills, expiringDate, picturePath };
+            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants }) => {
+                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants };
             }
         );
         req.status(200).json(formattedJobs);
