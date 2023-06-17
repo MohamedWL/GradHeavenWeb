@@ -1,9 +1,11 @@
-import React from 'react'
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
-const settingsPage = () => {
+const SettingsPage = () => {
     return (
-        <div>settingsPage</div>
-    )
-}
+        <Typography>
+            Hello there!
+        </Typography>
+    );
+};
 
-export default settingsPage;
+export default SettingsPage;

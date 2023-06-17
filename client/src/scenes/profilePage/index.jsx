@@ -1,9 +1,11 @@
-import React from 'react'
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
-const profilePage = () => {
+const ProfilePage = () => {
     return (
-        <div>profilePage</div>
-    )
-}
+        <Typography>
+            Hello there!
+        </Typography>
+    );
+};
 
-export default profilePage;
+export default ProfilePage;

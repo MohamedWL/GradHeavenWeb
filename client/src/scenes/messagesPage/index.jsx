@@ -1,9 +1,11 @@
-import React from 'react'
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
-const messagesPage = () => {
+const MessagesPage = () => {
     return (
-        <div>messagesPage</div>
-    )
-}
+        <Typography>
+            Hello there!
+        </Typography>
+    );
+};
 
-export default messagesPage;
+export default MessagesPage;

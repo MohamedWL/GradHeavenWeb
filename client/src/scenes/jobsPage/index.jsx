@@ -1,9 +1,11 @@
-import React from 'react'
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
-const jobsPage = () => {
+const JobsPage = () => {
     return (
-        <div>jobsPage</div>
-    )
-}
+        <Typography>
+            Hello there!
+        </Typography>
+    );
+};
 
-export default jobsPage;
+export default JobsPage;

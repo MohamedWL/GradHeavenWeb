@@ -1,12 +1,12 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
-import homePage from "scenes/homePage";
-import loginPage from "scenes/loginPage";
-import profilePage from "scenes/profilePage";
-import interviewsPage from "scenes/interviewsPage";
-import jobsPage from "scenes/jobsPage";
-import messagesPage from "scenes/messagesPage";
-import settingsPage from "scenes/settingsPage";
-import yourJobsPage from "scenes/yourJobsPage";
+import HomePage from "scenes/homePage";
+import LoginPage from "scenes/loginPage";
+import ProfilePage from "scenes/profilePage";
+import InterviewsPage from "scenes/interviewsPage";
+import JobsPage from "scenes/jobsPage";
+import MessagesPage from "scenes/messagesPage";
+import SettingsPage from "scenes/settingsPage";
+import YourJobsPage from "scenes/yourJobsPage";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -24,14 +24,14 @@ function App() {
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <Routes>
-                        <Route path="/" element={<loginPage />} />
-                        <Route path="/home" element={<homePage />} />
-                        <Route path="/profile/:userId" element={<profilePage />} />
-                        <Route path="/jobsPage" element={<jobsPage />} />
-                        <Route path="/messages/:userId" element={<messagesPage />} />
-                        <Route path="/settings/:userId" element={<settingsPage />} />
-                        <Route path="/interviews/userId" element={<interviewsPage />} />
-                        <Route path="/yourjobs/:userId" element={<yourJobsPage />} />
+                        <Route path="/" element={<LoginPage />} />
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/profile/:userId" element={<ProfilePage />} />
+                        <Route path="/jobsPage" element={<JobsPage />} />
+                        <Route path="/messages/:userId" element={<MessagesPage />} />
+                        <Route path="/settings/:userId" element={<SettingsPage />} />
+                        <Route path="/interviews/userId" element={<InterviewsPage />} />
+                        <Route path="/yourjobs/:userId" element={<YourJobsPage />} />
                     </Routes>
                 </ThemeProvider>
             </BrowserRouter>
