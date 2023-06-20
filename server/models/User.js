@@ -43,6 +43,7 @@ const UserSchema = new mongoose.Schema(
         },
         location: {
             type: String,
+            required: true,
             min: 2,
         },
         industry: {

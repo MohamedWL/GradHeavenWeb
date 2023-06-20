@@ -1,4 +1,4 @@
-import { CreateSlice, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 //state stored in global state, this data accessible for the whole app
 const initialState = {
