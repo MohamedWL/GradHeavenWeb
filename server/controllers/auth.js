@@ -17,7 +17,8 @@ export const register = async (req, res) => {
             location,
             industry,
             resumes,
-            jobs
+            jobs,
+            friends
         } = req.body;
         const salt = await bcrypt.genSalt(); //encryption of our password
         const passwordHash = await bcrypt.hash(password, salt);
@@ -32,7 +33,8 @@ export const register = async (req, res) => {
             location,
             industry,
             resumes,
-            jobs
+            jobs,
+            friends
         });
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);//status 201 as in created

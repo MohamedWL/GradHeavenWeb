@@ -5,11 +5,11 @@ export const getUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
-        req.status(200).json(user);
+        res.status(200).json(user);
     } catch (err) {
-        req.status(404).json({ message: err.message });
+        res.status(404).json({ message: err.message });
     }
-}
+};
 
 export const getUserJobs = async (req, res) => {
     try {

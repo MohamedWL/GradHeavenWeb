@@ -59,6 +59,10 @@ const UserSchema = new mongoose.Schema(
         jobs: {
             type: Array,
             default: [],
+        },
+        friends: {
+            type: Array,
+            default: [],
         }
     }, { timestamps: true }
 );
