@@ -395,9 +395,15 @@ export const companies = [
     },
 ];
 
+const jobIds = [
+    new mongoose.Types.ObjectId(),
+    new mongoose.Types.ObjectId(),
+    new mongoose.Types.ObjectId(),
+];
+
 export const jobs = [
     {
-        _id: new mongoose.Types.ObjectId(),
+        _id: jobIds[0],
         companyId: companyIds[1],
         JobTitle: "Software developer (Entry-Level)",
         jobDescription: "As an entry level Software Developer you'll be tasked with working on both mobile and web applications. Working within the software development team, your duties will require you to assist in the development of consumer and enterprise applications. This role is ideal for entry level developers who feel confident in their technical ability and want to be a part of the highly-skilled development team at Konrad.",
@@ -429,12 +435,13 @@ export const jobs = [
         picturePath: "",
         expiringDate: "2023-06-24",
         applicants: [],
+        pay: 65000,
     },
     {
-        _id: new mongoose.Types.ObjectId(),
+        _id: jobIds[1],
         companyId: companyIds[2],
         JobTitle: "Application developer",
-        jobDescription: "As an entry level Software Developer you'll be tasked with working on both mobile and web applications. Working within the software development team, your duties will require you to assist in the development of consumer and enterprise applications. This role is ideal for entry level developers who feel confident in their technical ability and want to be a part of the highly-skilled development team at Konrad.",
+        jobDescription: "As an application developer you'll be tasked with working with project managers, vendors, and business groups implementing software and delivering results on a frequent cycle and produce clean, efficient code and software architecture.",
         location: "Toronto, CA",
         aboutUs: "WSP is one of the world's leading professional services firms. Our purpose is to future proof our cities and environments.\
         We have over 65,000 team members across the globe. In Canada, our 12,000+ people are involved in everything from environmental remediation to urban planning, \
@@ -479,9 +486,10 @@ export const jobs = [
         picturePath: "",
         expiringDate: "2023-06-20",
         applicants: [],
+        pay: 80000,
     },
     {
-        _id: new mongoose.Types.ObjectId(),
+        _id: jobIds[2],
         companyId: companyIds[3],
         JobTitle: "Jet Charter Sales Broker",
         jobDescription: "As a Jet Charter Sales Broker, you will play a critical role in helping us achieve our mission. You will be responsible for cultivating sales leads and establishing relationships with potential private jet charter clients. You will manage the entire booking process from start to finish, ensuring a smooth and exceptional customer experience. Our ideal candidate is self-motivated, resilient, and passionate about sustainable aviation. You have a proven track record of exceeding sales targets and possess exceptional communication and problem-solving skills.",
@@ -509,6 +517,7 @@ export const jobs = [
         picturePath: "",
         expiringDate: "2023-06-30",
         applicants: [],
+        pay: 95000,
     },
 
 ];

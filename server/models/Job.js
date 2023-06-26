@@ -46,6 +46,11 @@ const JobSchema = new mongoose.Schema(
             type: Array,
             default: [],
         },
+        pay: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
     }, { timestamps: true }
 );
 

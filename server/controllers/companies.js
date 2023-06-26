@@ -21,8 +21,8 @@ export const getCompanyJobs = async (req, res) => {
         );
 
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants }) => {
-                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants };
+            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay }) => {
+                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay };
             }
         );
         req.status(200).json(formattedJobs);

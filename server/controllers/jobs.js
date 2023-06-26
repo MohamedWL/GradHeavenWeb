@@ -5,7 +5,7 @@ import Company from "../models/Company.js";
 
 export const createJob = async (req, res) => {
     try {
-        const { companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants } = req.body;
+        const { companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay } = req.body;
         const company = await Company.findById(companyId);
         const newJob = new Job({
             companyId,
@@ -18,7 +18,8 @@ export const createJob = async (req, res) => {
             advantages,
             picturePath,
             expiringDate,
-            applicants
+            applicants,
+            pay
         })
         await newJob.save();
         const job = await Job.find();
@@ -37,3 +38,13 @@ export const getCompanyJobs = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 }
+
+
+export const getJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find();
+        res.status(200).json(jobs);
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+};

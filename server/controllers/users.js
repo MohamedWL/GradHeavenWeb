@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Job from "../models/Job.js";
 
 //READ
 export const getUser = async (req, res) => {
@@ -6,6 +7,24 @@ export const getUser = async (req, res) => {
         const { id } = req.params;
         const user = await User.findById(id);
         res.status(200).json(user);
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+};
+export const getUserFriends = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+
+        const friends = await Promise.all(
+            user.friends.map((id) => User.findById(id))
+        );
+        const formattedFriends = friends.map(
+            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+                return { _id, firstName, lastName, occupation, location, picturePath };
+            }
+        );
+        res.status(200).json(formattedFriends);
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
@@ -21,8 +40,8 @@ export const getUserJobs = async (req, res) => {
         );
 
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants }) => {
-                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants };
+            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay }) => {
+                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay };
             }
         );
         req.status(200).json(formattedJobs);
@@ -31,27 +50,6 @@ export const getUserJobs = async (req, res) => {
     }
 }
 
-/*export const getUserResumes = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const user = await User.findById(id);
-
-        const resumes = await Promise.all(
-            user.resumes.map((id) => User.findById(id))
-        );
-
-        const formattedResumes = resumes.map(
-            ({ _id, userId, aboutMe, externalLinks, education, skills, domainSkills, experience, references }) => {
-                return { _id, userId, aboutMe, externalLinks, education, skills, domainSkills, experience, references };
-            }
-        );
-        req.status(200).json(formattedResumes);
-    } catch (err) {
-        req.status(404).json({ message: err.message });
-    }
-}*/
-
-//update
 
 
 export const addRemoveSavedJobs = async (req, res) => {
@@ -73,8 +71,8 @@ export const addRemoveSavedJobs = async (req, res) => {
             user.jobs.map((id) => User.findById(id))
         );
         const formattedJobs = jobs.map(
-            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants }) => {
-                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants };
+            ({ _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay }) => {
+                return { _id, companyId, jobTitle, jobDescription, location, aboutUs, requirements, otherSkills, advantages, picturePath, expiringDate, applicants, pay };
             }
         );
         req.status(200).json(formattedJobs);
@@ -82,45 +80,34 @@ export const addRemoveSavedJobs = async (req, res) => {
         req.status(404).json({ message: err.message });
     }
 }
-
-/*export const addRemoveResumes = async (req, res) => {
+export const addRemoveFriend = async (req, res) => {
     try {
-        const { id, resumeId } = req.params;
-        const user = User.findById(id);
-        const resume = await User.findById(resumeId);
-        if (user.resumes.includes(resumeId)) {
-            user.resumes = user.resumes.filter((id) => id !== resumeId);
-            resume.resumes = resume.resumes.filter((id) => id !== id); //we check if the id correspond and we remove them if so
+        const { id, friendId } = req.params;
+        const user = await User.findById(id);
+        const friend = await User.findById(friendId);
+
+        if (user.friends.includes(friendId)) {
+            user.friends = user.friends.filter((id) => id !== friendId);
+            friend.friends = friend.friends.filter((id) => id !== id);
         } else {
-            user.resumes.push(resumeId);
-            resume.resumes.push(id);
+            user.friends.push(friendId);
+            friend.friends.push(id);
         }
         await user.save();
-        await resume.save();
+        await friend.save();
 
-        const resumes = await Promise.all(
-            user.resumes.map((id) => User.findById(id))
+        const friends = await Promise.all(
+            user.friends.map((id) => User.findById(id))
         );
-
-        const formattedResumes = resumes.map(
-            ({ _id, userId, aboutMe, externalLinks, education, skills, domainSkills, experience, references }) => {
-                return { _id, userId, aboutMe, externalLinks, education, skills, domainSkills, experience, references };
+        const formattedFriends = friends.map(
+            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+                return { _id, firstName, lastName, occupation, location, picturePath };
             }
         );
-        req.status(200).json(formattedResumes);
+
+        res.status(200).json(formattedFriends);
     } catch (err) {
-        req.status(404).json({ message: err.message });
+        res.status(404).json({ message: err.message });
     }
-}*/
-
-
-
-
-
-
-
-
-
-
-
+};
 

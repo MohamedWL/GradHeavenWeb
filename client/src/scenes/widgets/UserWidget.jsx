@@ -88,7 +88,9 @@ const UserWidget = ({ userId, picturePath }) => {
             <Box p="1rem 0">
                 <Box display="flex" alignItems="center" gap="1rem">
                     <CakeOutlinedIcon fontSize="large" sx={{ color: main }} />
-                    <Typography color={medium}>{birthday}</Typography>
+                    <Typography color={medium}>
+                        {birthday.substring(0, 10)}
+                    </Typography>
                 </Box>
                 <Box display="flex" alignItems="center" gap="1rem">
                     <ContactPhoneOutlinedIcon fontSize="large" sx={{ color: main }} />
