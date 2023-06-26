@@ -6,4 +6,10 @@
 ## About the web version
 #### This repo holds the source code of the web version of the application. It is a MERN fullstack application that uses Redux.
 
-## A peak of what it looks like
+## A peak of what it looks like as of right now.
+
+![](images/login.PNG)
+![](images/register.PNG)
+![](images/homepage.PNG)
+![](images/homepageLightMode.PNG)
+
