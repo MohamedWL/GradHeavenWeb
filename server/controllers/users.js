@@ -11,24 +11,7 @@ export const getUser = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 };
-export const getUserFriends = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const user = await User.findById(id);
 
-        const friends = await Promise.all(
-            user.friends.map((id) => User.findById(id))
-        );
-        const formattedFriends = friends.map(
-            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-                return { _id, firstName, lastName, occupation, location, picturePath };
-            }
-        );
-        res.status(200).json(formattedFriends);
-    } catch (err) {
-        res.status(404).json({ message: err.message });
-    }
-};
 
 export const getUserJobs = async (req, res) => {
     try {
@@ -49,8 +32,6 @@ export const getUserJobs = async (req, res) => {
         req.status(404).json({ message: err.message });
     }
 }
-
-
 
 export const addRemoveSavedJobs = async (req, res) => {
     try {
@@ -80,34 +61,72 @@ export const addRemoveSavedJobs = async (req, res) => {
         req.status(404).json({ message: err.message });
     }
 }
-export const addRemoveFriend = async (req, res) => {
+
+export const removeFriend = async (req, res) => {
     try {
         const { id, friendId } = req.params;
         const user = await User.findById(id);
         const friend = await User.findById(friendId);
 
-        if (user.friends.includes(friendId)) {
-            user.friends = user.friends.filter((id) => id !== friendId);
-            friend.friends = friend.friends.filter((id) => id !== id);
-        } else {
-            user.friends.push(friendId);
-            friend.friends.push(id);
+        if (!user.friends.includes(friendId) || !friend.friends.includes(id)) {
+            res.status(400).json({ message: "User is not a friend" });
+            return;
         }
+
+        user.friends = user.friends.filter((friend) => friend !== friendId);
+        friend.friends = friend.friends.filter((friend) => friend !== id);
+
         await user.save();
         await friend.save();
 
-        const friends = await Promise.all(
-            user.friends.map((id) => User.findById(id))
-        );
-        const formattedFriends = friends.map(
-            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-                return { _id, firstName, lastName, occupation, location, picturePath };
-            }
-        );
-
-        res.status(200).json(formattedFriends);
+        res.status(200).json({ message: "Friend removed successfully" });
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
 };
+
+export const getFriends = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).populate("friends");
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ friends: user.friends });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+export const addFriend = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { friendId } = req.body;
+
+        const user = await User.findById(id);
+        const friend = await User.findById(friendId);
+
+        if (!user || !friend) {
+            return res.status(404).json({ message: "User or friend not found." });
+        }
+
+        if (user.friends.includes(friendId) || friend.friends.includes(id)) {
+            return res.status(400).json({ message: "User is already a friend." });
+        }
+
+        user.friends.push(friendId);
+        friend.friends.push(id);
+
+        await user.save();
+        await friend.save();
+
+        res.status(200).json({ message: "Friend added successfully.", friends: user.friends });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to add friend.", error: error.message });
+    }
+};
+
+//CHATGPT add the code that will add the selected user as a friend to a user
+
+//CHATGPT add the code that will remove the selected user from a user's friend list
 
