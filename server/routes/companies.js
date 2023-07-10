@@ -6,7 +6,7 @@ import {
 } from "../controllers/companies.js";
 
 import { verifyToken } from "../middleware/auth.js";
-
+//routes
 const router = express.Router();
 
 //READ
