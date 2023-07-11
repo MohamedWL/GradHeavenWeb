@@ -13,6 +13,7 @@ import authCompRoutes from "./routes/authcomp.js";
 import userRoutes from "./routes/users.js ";
 import resumeRoutes from "./routes/resumes.js";
 import companyRoutes from "./routes/companies.js";
+import notificationRoutes from "./routes/notifications.js"
 import jobRoutes from "./routes/jobs.js";
 import coverLetterRoutes from "./routes/coverletters.js";
 import { register } from "./controllers/auth.js";
@@ -66,6 +67,7 @@ app.use("/authcomp", authCompRoutes);
 app.use("/users", userRoutes);
 app.use("/companies", companyRoutes);
 app.use("/resumes", resumeRoutes);
+app.use("/notifications", notificationRoutes);
 app.post("/resumes", verifyToken, createResume)
 app.use("/coverletters", coverLetterRoutes);
 app.post("/coverletters", verifyToken, createCoverLetter)

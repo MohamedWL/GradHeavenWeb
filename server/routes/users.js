@@ -6,12 +6,16 @@ import {
     addFriend,
     removeFriend,
     getFriends,
+    getAllUser,
     //CHATGPT Add controller modules that will allow a user to add friends
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/auth.js";
+
+
 const router = express.Router();
 //routes
 //READ
+router.get("/allusers", getAllUser);
 router.get("/:id", verifyToken, getUser);
 router.get("/:id/jobs", verifyToken, getUserJobs);
 router.get("/:id/friends", verifyToken, getFriends);
