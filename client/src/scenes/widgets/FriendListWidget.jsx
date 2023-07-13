@@ -18,7 +18,7 @@ const FriendListWidget = ({ userId }) => {
     const friends = useSelector((state) => state.user.friends);
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState('');
-
+    const [requestSent, setRequestButtonStyle] = useState(false);
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -34,6 +34,49 @@ const FriendListWidget = ({ userId }) => {
 
         fetchJobs();
     }, []);
+
+    const handleSendRequest = async () => {
+        handleButtonRequestStyleChange();
+        if (selectedUser) {
+            const [firstName, lastName] = selectedUser.split(' '); // Splitting the selectedUser variable into first name and last name
+            try {
+                const url = `http://localhost:3001/users/userbyfullname?firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`;
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                });
+                const data = await response.json();
+                console.log("User data:", data);
+                const receiverId = data._id;
+                const senderId = userId;
+
+                console.log("Sender ID:", userId); // Log the sender ID
+                console.log("Receiver ID:", receiverId); // Log the receiver ID
+
+                await fetch("http://localhost:3001/notifications/createnotification", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ senderId, receiverId, notiType: "Friend Request"}),
+                });
+
+                // Add your additional logic here if needed
+
+                console.log("Friend request sent successfully");
+            } catch (error) {
+                console.error("Error sending friend request:", error);
+            }
+        }
+    };
+
+    const handleButtonRequestStyleChange = () => {
+        // Update the state to indicate that the request is sent
+        setRequestButtonStyle(true);
+    
+        // Reset the state after 5 seconds
+        setTimeout(() => {
+            setRequestButtonStyle(false);
+        }, 5000);
+      };
 
 
     return (
@@ -58,14 +101,16 @@ const FriendListWidget = ({ userId }) => {
                         sx={{
                             height: '30px',
                             width: '118px',
-                            backgroundColor: palette.primary.main,
-                            color: palette.background.alt,
-                            "&:hover": { color: palette.primary.main },
+                            backgroundColor: requestSent ? 'green' : 'palette.primary.main',
+                            color: requestSent ? 'white' : 'palette.background.alt',
+                            '&:hover': { color: requestSent ? 'white' : 'palette.primary.main' },
                             fontWeight: 'bold',
-                            fontSize:'8px',
+                            fontSize: '8px',
                         }}
-                    >
-                        Send Request to {selectedUser}
+                        onClick={handleSendRequest}
+                        disabled={requestSent} // Disable the button when the request is sent
+                        >
+                        {requestSent ? 'Request sent' : `Send Request to ${selectedUser}`}
                     </Button>
                 </Box>
                 <Typography>Your friends:</Typography>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, IconButton, InputBase, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery } from "@mui/material";
 import { Search, Message, DarkMode, LightMode, Notifications, Help, Menu, Close } from "@mui/icons-material";
+import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-
+    const newNotificationsCount = 3;
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
@@ -61,7 +62,9 @@ const Navbar = () => {
                         )}
                     </IconButton>
                     <Message sx={{ fontSize: "25px" }} />
-                    <Notifications sx={{ fontSize: "25px" }} />
+                    <Badge badgeContent={newNotificationsCount} color="error">
+                        <Notifications sx={{ fontSize: '25px' }} />
+                    </Badge>
                     <Help sx={{ fontSize: "25px" }} />
                     <FormControl variant="standard" value={fullName}>
                         <Select

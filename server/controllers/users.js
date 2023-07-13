@@ -22,7 +22,21 @@ export const getAllUser = async (req, res) => {
     }
 };
 
-
+export const getUserByFullName = async (req, res) => {
+    try {
+        const { firstName, lastName } = req.query; // Assuming the first name and last name are passed in the request body
+        
+        const user = await User.findOne({ firstName, lastName });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
 export const getUserJobs = async (req, res) => {
     try {

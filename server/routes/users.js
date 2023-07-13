@@ -2,6 +2,7 @@ import express from "express";
 import {
     getUser,
     getUserJobs,
+    getUserByFullName,
     addRemoveSavedJobs,
     addFriend,
     removeFriend,
@@ -16,6 +17,7 @@ const router = express.Router();
 //routes
 //READ
 router.get("/allusers", getAllUser);
+router.get("/userbyfullname", getUserByFullName);
 router.get("/:id", verifyToken, getUser);
 router.get("/:id/jobs", verifyToken, getUserJobs);
 router.get("/:id/friends", verifyToken, getFriends);

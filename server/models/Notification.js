@@ -10,7 +10,7 @@ const NotificationSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        notificationtype: {
+        notificationType: {
             type: String,
             required: true,
         },
