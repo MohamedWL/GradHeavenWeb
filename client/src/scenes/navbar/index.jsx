@@ -2,18 +2,18 @@ import { useState } from "react";
 import { Box, IconButton, InputBase, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery } from "@mui/material";
 import { Search, Message, DarkMode, LightMode, Notifications, Help, Menu, Close } from "@mui/icons-material";
 import Badge from '@mui/material/Badge';
+import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
-const Navbar = () => {
+const Navbar = ({notiCount}) => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-    const newNotificationsCount = 3;
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
@@ -22,6 +22,22 @@ const Navbar = () => {
     const alt = theme.palette.background.alt;
 
     const fullName = user === null ? "Default User" : `${user.firstName} ${user.lastName}`;
+    const [notifications, setNotifications] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleNotificationClick = async () => {
+        // Call backend function to mark notifications as read
+        const url = `http://localhost:3001/notifications/readnotifications?userIdentification=${encodeURIComponent(user._id)}`;
+        const response = await fetch(url, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        setNotifications(data);
+        // Show modal/pop-up with notifications
+        setIsModalOpen(true);
+    };
+    
 
     return (
         <FlexBetween padding={"1rem 6%"} backgroundColor={alt}>
@@ -62,9 +78,20 @@ const Navbar = () => {
                         )}
                     </IconButton>
                     <Message sx={{ fontSize: "25px" }} />
-                    <Badge badgeContent={newNotificationsCount} color="error">
-                        <Notifications sx={{ fontSize: '25px' }} />
+                    <Badge badgeContent={notiCount.count} color="error">
+                        <Notifications sx={{ fontSize: '25px' }} onClick={handleNotificationClick}/>
                     </Badge>
+                    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                        <div>
+                            {notifications.map((notification) => (
+                                <div key={notification._id}>
+                                    <h4>{notification.sender}</h4>
+                                    <p>{notification.notificationType}</p>
+                                    <hr />
+                                </div>
+                            ))}
+                        </div>
+                    </Modal>
                     <Help sx={{ fontSize: "25px" }} />
                     <FormControl variant="standard" value={fullName}>
                         <Select

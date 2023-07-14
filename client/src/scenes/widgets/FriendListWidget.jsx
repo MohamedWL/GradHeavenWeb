@@ -46,12 +46,8 @@ const FriendListWidget = ({ userId }) => {
                     headers: { "Content-Type": "application/json" },
                 });
                 const data = await response.json();
-                console.log("User data:", data);
                 const receiverId = data._id;
                 const senderId = userId;
-
-                console.log("Sender ID:", userId); // Log the sender ID
-                console.log("Receiver ID:", receiverId); // Log the receiver ID
 
                 await fetch("http://localhost:3001/notifications/createnotification", {
                     method: "POST",
