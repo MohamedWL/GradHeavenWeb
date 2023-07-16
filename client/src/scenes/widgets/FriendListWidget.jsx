@@ -1,5 +1,7 @@
 import { Box, Typography, useTheme, Button, Divider } from "@mui/material";
+import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
+import UserImage from "components/UserImage";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +17,12 @@ const FriendListWidget = ({ userId }) => {
     const main = palette.neutral.main;
     const light = palette.primary.light;
     const token = useSelector((state) => state.token);
-    const friends = useSelector((state) => state.user.friends);
+    //const friends = useSelector((state) => state.user.friends);
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState('');
     const [requestSent, setRequestButtonStyle] = useState(false);
+    const [friendIds, setFriendIdsList] = useState(null);
+    const [friends, setFriendsList] = useState(null);
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -29,7 +33,6 @@ const FriendListWidget = ({ userId }) => {
             }); // Replace with your backend API endpoint
             const data = await response.json();
             setUsers(data);
-
         };
 
         fetchJobs();
@@ -72,7 +75,34 @@ const FriendListWidget = ({ userId }) => {
         setTimeout(() => {
             setRequestButtonStyle(false);
         }, 5000);
-      };
+    };
+
+    useEffect(() => {
+        const getUser = async () => {
+            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await response.json();
+            const fetchedFriendIds = data.friends;
+            setFriendIdsList(fetchedFriendIds);
+    
+            if (fetchedFriendIds) {
+                const friendsUser = await Promise.all(
+                    fetchedFriendIds.map(async (friendId) => {
+                        const userResponse = await fetch(`http://localhost:3001/users/${friendId}`, {
+                            method: "GET",
+                            headers: { Authorization: `Bearer ${token}` },
+                        });
+                        const userData = await userResponse.json();
+                        return userData;
+                    })
+                );
+                setFriendsList(friendsUser);
+            }
+        };
+        getUser();
+    }, [userId, token]); // Add friendIds as a dependency
 
 
     return (
@@ -91,7 +121,6 @@ const FriendListWidget = ({ userId }) => {
                             </option>
                         ))}
                     </select>
-                    <p>Selected User: {selectedUser}</p>
                     <Divider></Divider>
                     <Button
                         sx={{
@@ -110,6 +139,12 @@ const FriendListWidget = ({ userId }) => {
                     </Button>
                 </Box>
                 <Typography>Your friends:</Typography>
+                {friends && friends.map((friend) => ( 
+                    <FlexBetween key={friend._id}>
+                        <UserImage image={friend.picturePath}/>
+                        <Typography>{friend.firstName} {friend.lastName}</Typography>
+                    </FlexBetween>
+                ))}
             </Box>
         </WidgetWrapper >
     );
