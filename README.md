@@ -10,6 +10,6 @@
 
 ![](images/login.PNG)
 ![](images/register.PNG)
-![](images/homepage.PNG)
+![](images/homepageFriends.PNG)
 ![](images/homepageLightMode.PNG)
 
