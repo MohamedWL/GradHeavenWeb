@@ -15,3 +15,6 @@ Friends added. They are removed with the X button and can be added after selecti
 ![](images/homepageFriends.PNG)
 ![](images/homepageLightMode.PNG)
 
+The first glimpse of the profilepage
+![](images/profilepage.PNG)
+
