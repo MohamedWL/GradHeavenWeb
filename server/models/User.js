@@ -51,7 +51,9 @@ const UserSchema = new mongoose.Schema(
             required: true,
             min: 5,
         },
-        desiredPay: Number,
+        desiredPay: {
+            type: Number,
+        },
         resumes: {
             type: Array,
             default: [],

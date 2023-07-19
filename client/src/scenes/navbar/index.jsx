@@ -8,6 +8,7 @@ import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
+
 const Navbar = ({notiCount}) => {
     const notiAmount = notiCount.count;
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -58,30 +59,33 @@ const Navbar = ({notiCount}) => {
     const handleFriendRequestClick = async ({ senderId, receiverId, decision }) => {
         const url = `http://localhost:3001/notifications/deletenoti`;
         const payload = {
-          senderId,
-          receiverId,
-          decision
+            senderId,
+            receiverId,
+            decision
         };
         
         try {
-          const response = await fetch(url, {
+            const response = await fetch(url, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
-          });
-          
-          if (response.ok) {
+            });
+            
+            if (response.ok) {
             console.log("Notification deleted successfully");
             // Perform any additional actions after deleting the notification
-          } else {
+            } else {
             console.error("Failed to delete notification");
-          }
+            }
         } catch (error) {
-          console.error("An error occurred while deleting the notification:", error);
+            console.error("An error occurred while deleting the notification:", error);
         }
         setIsModalOpen(false);
         setIsBadgeInvisible(true);
-      };
+        if(decision==="Accept"){
+            window.location.reload();
+        }
+    };
     
 
     return (

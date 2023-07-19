@@ -6,7 +6,7 @@ import {
 } from "@mui/icons-material";
 import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined';
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, Divider, useTheme, Button} from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -79,7 +79,19 @@ const UserWidget = ({ userId, picturePath }) => {
                         <Typography color={medium}>{friends.length} friends</Typography>
                     </Box>
                 </FlexBetween>
-                <ManageAccountsOutlined />
+                <Button 
+                    sx={{
+                        color:'white', 
+                        backgroundColor:'red', 
+                        padding:'2px', 
+                        minWidth:'20px', 
+                        borderRadius:'12px',
+                        '&:hover': { color:'red', backgroundColor:'white' },
+                    }}
+                    onClick={() => navigate(`/profile/${userId}`)}
+                >
+                    <ManageAccountsOutlined />
+                </Button>
             </FlexBetween>
 
             <Divider />

@@ -6,6 +6,8 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "state";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 //
 
@@ -16,6 +18,7 @@ const FriendListWidget = ({ userId }) => {
     const medium = palette.neutral.medium;
     const main = palette.neutral.main;
     const light = palette.primary.light;
+    const neutralLight = palette.neutral.light;
     const token = useSelector((state) => state.token);
     //const friends = useSelector((state) => state.user.friends);
     const [users, setUsers] = useState([]);
@@ -104,15 +107,52 @@ const FriendListWidget = ({ userId }) => {
         getUser();
     }, [userId, token]); // Add friendIds as a dependency
 
+    const removeFriendClick = async ({ loggedUserIdentification, friendIdentification }) => {
+        setFriendsList((prevFriends) => prevFriends.filter((friend) => friend._id !== friendIdentification));
+        try {
+          // Construct the URL for the endpoint
+          const url = `http://localhost:3001/users/userfriend`;
+          const payload = {
+            loggedUserIdentification,
+            friendIdentification,
+          };
+      
+          // Make a PUT request using the Fetch API
+          const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, 
+            },
+            body: JSON.stringify(payload),
+          });
+      
+          // Check if the response is successful
+          if (response.ok) {
+            // Friend removed successfully
+            console.log('Friend removed successfully');
+          } else {
+            // Handle the error if the response status is not 200
+            const data = await response.json();
+            console.log('Error:', data.message);
+          }
+        } catch (err) {
+          console.error('Error:', err.message);
+        }
+    };
+
 
     return (
-        <WidgetWrapper>
-            <Typography color={palette.neutral.dark} variant="h5" fontWeight="500" sx={{ mb: "1.5rem" }}>
+        <WidgetWrapper>         
+            <Typography textAlign={'center'} color={palette.neutral.dark} variant="h5" fontWeight="500" sx={{ mb: "1.5rem" }}>
                 Add your friends
-            </Typography>
-            <Box display="flex" gap="1.5rem" justifyContent="space-between">
+            </Typography>  
+            <Box sx={{justifyContent:'space-around', display:'flex', alignItems:'center'}}>
+                <Typography marginLeft={'-20px'}>Select a user:</Typography>
+                <Typography marginRight={'0px'}>Your friends:</Typography>
+            </Box>
+            <Box display="flex" gap="1rem" justifyContent="space-between">
                 <Box gap="0.5rem">
-                    <Typography>Select a user:</Typography>
                     <select id="userSelect" onChange={(e) => setSelectedUser(e.target.value)}>
                         <option value="">-- Select user --</option>
                         {users.map((user) => (
@@ -126,9 +166,9 @@ const FriendListWidget = ({ userId }) => {
                         sx={{
                             height: '30px',
                             width: '118px',
-                            backgroundColor: requestSent ? 'green' : 'palette.primary.main',
-                            color: requestSent ? 'white' : 'palette.background.alt',
-                            '&:hover': { color: requestSent ? 'white' : 'palette.primary.main' },
+                            backgroundColor: requestSent ? 'green' : palette.primary.main,
+                            color: requestSent ? 'white' : palette.background.alt,
+                            '&:hover': { color: requestSent ? 'white' : palette.primary.main },
                             fontWeight: 'bold',
                             fontSize: '8px',
                         }}
@@ -138,13 +178,51 @@ const FriendListWidget = ({ userId }) => {
                         {requestSent ? 'Request sent' : `Send Request to ${selectedUser}`}
                     </Button>
                 </Box>
-                <Typography>Your friends:</Typography>
-                {friends && friends.map((friend) => ( 
-                    <FlexBetween key={friend._id}>
-                        <UserImage image={friend.picturePath}/>
-                        <Typography>{friend.firstName} {friend.lastName}</Typography>
-                    </FlexBetween>
-                ))}
+                    <Box 
+                    sx={{
+                        display:'row',
+                    }} 
+                >
+                    {friends && friends.map((friend) => ( 
+                            <Box key={friend._id} 
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-around',
+                                    alignItems: 'center',
+                                    backgroundColor:neutralLight,
+                                    width:'175px',
+                                    borderRadius:'5px',
+                                    marginBottom:'5px',
+                                    height:'40px'
+                                }}  
+                            >
+                                <UserImage image={friend.picturePath} size="30px"/>
+                                <Typography 
+                                    sx={{
+                                        fontSize:'12px',
+                                        textAlign:'center'
+                                    }}
+                                >
+                                    {`${friend.firstName} ${friend.lastName}`.length > 15
+                                    ? `${friend.firstName} ${friend.lastName}`.slice(0, 15) + '...'
+                                    : `${friend.firstName} ${friend.lastName}`}
+                                </Typography>
+                                <Button 
+                                    sx={{
+                                        color:'white', 
+                                        backgroundColor:'red', 
+                                        padding:'2px', 
+                                        minWidth:'20px', 
+                                        borderRadius:'12px',
+                                        '&:hover': { color:'red', backgroundColor:'white' },
+                                    }}
+                                    onClick={() => removeFriendClick({ loggedUserIdentification: userId, friendIdentification: friend._id })}
+                                >
+                                    <CloseIcon/>
+                                </Button>
+                            </Box>
+                    ))}
+                </Box>
             </Box>
         </WidgetWrapper >
     );

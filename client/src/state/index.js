@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-//5
 //state stored in global state, this data accessible for the whole app
 const initialState = {
     mode: "light", //darkmode or light mode
