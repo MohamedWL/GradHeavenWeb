@@ -10,6 +10,8 @@
 
 ![](images/login.PNG)
 ![](images/register.PNG)
+
+Friends added. They are removed with the X button and can be added after selecting a user from the dropdown which sends a notification. The other user will see a modal after clicking on the bell icon and he can then accept or deny the request
 ![](images/homepageFriends.PNG)
 ![](images/homepageLightMode.PNG)
 
