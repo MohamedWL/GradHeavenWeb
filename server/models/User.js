@@ -58,6 +58,10 @@ const UserSchema = new mongoose.Schema(
             type: Array,
             default: [],
         },
+        userImage: {
+            data: Buffer, // Use Buffer type to store binary data (image)
+            contentType: String, // Store the content type of the image (e.g., "image/jpeg", "image/png", etc.)
+        },
         jobs: {
             type: Array,
             default: [],
