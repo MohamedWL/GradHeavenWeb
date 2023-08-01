@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const ResumeSchema = new mongoose.Schema(
     {
-        userId: {
+        userIdenditification: {
             type: String,
             required: true,
         },
@@ -20,37 +20,47 @@ const ResumeSchema = new mongoose.Schema(
         },
         phoneNumber: String,
         location: String,
-        externalLinks: {
+        linkedInLink: {
             type: String,
         },
-        education: {
+        portfolioLink: {
+            type: String,
+        },
+        highestDegree: {
             type: String,
             required: true,
-            min: 5,
+        },
+        fieldOfStudy: {
+            type: String,
+            required: true,
+        },
+        educationEstablishment: {
+            type: String,
+            required: true,
+        },
+        hasGraduated: {
+            type: Boolean,
+        },
+        graduationDate: {
+            type: Date,
         },
         skills: {
             type: String,
             required: true,
-            min: 2,
         },
         domainSkills: {
             type: String,
             required: true,
-            min: 5,
         },
         experience: {
             type: String,
             required: true,
-            min: 10,
         },
-        aboutMe: {
+        firstReference: {
             type: String,
-            required: true,
-            min: 2,
         },
-        references: {
+        secondReference: {
             type: String,
-            min: 5,
         },
         userPicturePath: {
             type: String,

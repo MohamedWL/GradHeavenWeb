@@ -1,27 +1,18 @@
 import { useState, useEffect } from "react";
 import {
     Box,
-    Button,
-    TextField,
     useMediaQuery,
-    Typography,
-    useTheme,
 } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useSelector} from "react-redux";
-import Dropzone from "react-dropzone";
-import FlexBetween from "components/FlexBetween";
-import WidgetWrapper from "components/WidgetWrapper";
 import Navbar from "scenes/navbar";
-import UserImage from "components/UserImage";
+import { useSelector } from "react-redux";
 import UpdateInfo from "scenes/widgets/UpdateInfo";
+import ResumeWidget from "scenes/widgets/ResumeWidget";
+import CoverLetterWidget from "scenes/widgets/CoverLetterWidget";
 
 
 const ProfilePage = () => {
     const { _id} = useSelector((state) => state.user);
-    const isNonMobile = useMediaQuery("(min-width:600px)");
+    const isNonMobileScreens = useMediaQuery("(min-width:600px)");
     const [newNotificationsCount, setNewNotificationsCount] = useState(0);
 
     const findNotiForUser = async () => {
@@ -51,9 +42,27 @@ const ProfilePage = () => {
 
 
     return (
-        <Box sx={{}}>
-            <Navbar notiCount= {newNotificationsCount}/>
-            <UpdateInfo userId={_id}/>
+        <Box>
+          <Navbar notiCount= {newNotificationsCount}/>
+          <Box
+              width="100%"
+              padding="2rem 6%"
+              display="flex"
+              gap="0.5rem"
+              justifyContent="space-between"
+          >
+              <Box>
+                <UpdateInfo userId={_id}/>
+              </Box>
+              <Box width="49%" display="flex" flexDirection="column" justifyContent="space-between">
+                <Box height="75%">
+                  <ResumeWidget userId={_id} />
+                </Box>
+                <Box height="23%">
+                  <CoverLetterWidget userId={_id}/>
+                </Box>
+              </Box>
+          </Box>
         </Box>
     );
 };

@@ -11,6 +11,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector} from "react-redux";
+import WidgetWrapper from "components/WidgetWrapper";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import UserImage from "components/UserImage";
@@ -196,19 +197,18 @@ const UpdateInfo = ({userId}) => {
             setEmailLabelValue(textFieldLabel);   
         }
     }
-    
     // Perform any additional logic if needed when the TextField loses focus.
     };
 
 
     return (
         <form>
+            <WidgetWrapper>
                 <Box
                     gap="10px"
                     sx={{
                         width:'600px',  
-                        backgroundColor:neutralLight,
-                        margin:'20px',
+                        margin:'5px',
                         borderRadius:'15px',
                     }}
                 >
@@ -238,8 +238,7 @@ const UpdateInfo = ({userId}) => {
                         sx={{
                             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
                             width:'600px',  
-                            backgroundColor:neutralLight,
-                            padding:'15px',
+                            padding:'7px',
                             borderRadius:'15px',
                         }}
                     >
@@ -361,6 +360,7 @@ const UpdateInfo = ({userId}) => {
                                 width:'421%',
                                 "&:hover": { color: main },
                                 marginTop:'10px',
+                                fontSize:'15px'
                             }}
                             onClick={handleSubmit}
                         >
@@ -368,6 +368,7 @@ const UpdateInfo = ({userId}) => {
                         </Button>
                     </Box>
                 </Box>
+            </WidgetWrapper>
         </form>
     );
 };
