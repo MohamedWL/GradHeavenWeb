@@ -2,13 +2,12 @@ import mongoose from "mongoose";
 
 const CoverLetterSchema = new mongoose.Schema(
     {
-        userId: {
+        userIdenditification: {
             type: String,
             required: true,
         },
         coverLetterContent: {
             type: String,
-            min: 10,
         }
     }, { timestamps: true }
 );

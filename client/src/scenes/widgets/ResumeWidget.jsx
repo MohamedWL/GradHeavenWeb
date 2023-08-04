@@ -12,6 +12,7 @@ import { useSelector} from "react-redux";
 import WidgetWrapper from "components/WidgetWrapper";
 import FlexBetween from "components/FlexBetween";
 import CenteredBox from "components/CenteredBox";
+import AddResumeForm from "./AddResumeForm";
 
 const ResumeWidget = ({userId}) => {
 
@@ -39,6 +40,8 @@ const ResumeWidget = ({userId}) => {
     const [firstRef, setFirstReference] = useState("");
     const [secondRef, setSecondReference] = useState("");
     const [isGrad, setGradStatus] = useState(false);
+
+    const [addingResume, setAddingResume] = useState(false);
 
     const [isEditingLinkedIn, setIsEditingLinkedIn] = useState(false);
     const [isEditingPortfolio, setIsEditingPortfolio] = useState(false);
@@ -72,7 +75,7 @@ const ResumeWidget = ({userId}) => {
         const data = await response.json();
         setResume(data);
         if(data.resume !== null){
-            setGradStatus(data.hasGraduated)
+            setGradStatus(data.hasGraduated);
         }
     };
 
@@ -83,11 +86,12 @@ const ResumeWidget = ({userId}) => {
         });
         const data = await response.json();
         setUser(data);
+        console.log(data)
     };
 
     useEffect(() => {
-        getUser();
         getResume();
+        getUser();
     }, []);
 
     if (!user) {
@@ -269,7 +273,9 @@ const ResumeWidget = ({userId}) => {
     const handleNoButtonClick = () => {
         setGradStatus(false);
     };
-    //Next step: handleSubmit
+    const handleAddResumeClick = () => {
+        setAddingResume(true);
+    };
 
     return (
         <WidgetWrapper height={'100%'}>
@@ -277,8 +283,8 @@ const ResumeWidget = ({userId}) => {
                 <Typography fontWeight={'bold'} fontSize={"30px"}>Your Resume</Typography>
             </CenteredBox>
             {resume.resume === null  ? (
-                // Render the button when resume is null
-                <WidgetWrapper height={'100%'}>
+
+                addingResume === false ? (
                     <CenteredBox display="grid" paddingTop='20%'>
                         <Typography fontSize={"15px"}>You do not have a resume yet. Create your resume !</Typography>
                         <Button 
@@ -292,11 +298,15 @@ const ResumeWidget = ({userId}) => {
                                 paddingLeft:'-10px',
                                 paddingRight:'-10px',
                             }}
+                            onClick={handleAddResumeClick}
                         >
                             Create your resume
                         </Button>
                     </CenteredBox>
-                </WidgetWrapper>
+                ) : (
+                    <AddResumeForm userIdent={userId}/>
+                )
+                
             ) : (
                 // Render the form when resume is not null
                 <form>

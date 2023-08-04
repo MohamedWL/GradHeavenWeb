@@ -5,6 +5,7 @@ const ResumeSchema = new mongoose.Schema(
         userIdenditification: {
             type: String,
             required: true,
+            unique: true,
         },
         firstName: {
             type: String,
@@ -62,10 +63,6 @@ const ResumeSchema = new mongoose.Schema(
         secondReference: {
             type: String,
         },
-        userPicturePath: {
-            type: String,
-            default: "",
-        }
     }, { timestamps: true }
 );
 

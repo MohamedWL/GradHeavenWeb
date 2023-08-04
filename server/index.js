@@ -70,7 +70,6 @@ app.use("/resumes", resumeRoutes);
 app.use("/notifications", notificationRoutes);
 app.post("/resumes", verifyToken, createResume)
 app.use("/coverletters", coverLetterRoutes);
-app.post("/coverletters", verifyToken, createCoverLetter)
 app.use("/jobs", jobRoutes);
 app.post("/jobs", verifyToken, createJob)
 

@@ -4,32 +4,60 @@ import User from "../models/User.js";
 //CREATE
 
 export const createResume = async (req, res) => {
-    try {
-        const { userId, firstName, lastName, email, phoneNumber, location, externalLinks, education, skills, domainSkills, experience, aboutMe, references, userPicturePath } = req.body;
-        const user = await User.findById(userId);
-        const newResume = new Resume({
-            userId,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            location: user.location,
-            externalLinks,
-            education,
-            skills,
-            domainSkills,
-            experience,
-            aboutMe,
-            references,
-            userPicturePath,
-        })
-        await newResume.save();
-        const resume = await Resume.find();
-        res.status(201).json(resume);
-    } catch (err) {
-        res.status(409).json({ message: err.message });
-    }
-}
+  const userId = req.params.id;
+  console.log(userId);
+  const {
+    highestDegree,
+    fieldOfStudy,
+    educationEstablishment,
+    hasGraduated,
+    graduationDate,
+    experience,
+    domSkills,
+    softSkills,
+    linkedInInfo,
+    portfolioInfo,
+    firstRefer,
+    secondRef,
+  } = req.body;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+      const parsedGraduationDate = new Date(graduationDate);
+
+      const newResume = new Resume({
+          userIdenditification: userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          location: user.location,
+          highestDegree,
+          fieldOfStudy,
+          educationEstablishment,
+          hasGraduated,
+          graduationDate: parsedGraduationDate,
+          experience,
+          domainSkills: domSkills,
+          skills: softSkills,
+          linkedInLink:linkedInInfo,
+          portfolioLink: portfolioInfo,
+          firstReference: firstRefer,
+          secondReference: secondRef,
+      });
+
+      console.log(newResume.firstReference);
+
+      const savedResume = await newResume.save();
+      res.status(201).json(savedResume);
+  } catch (err) {
+      res.status(409).json({ message: err.message });
+  }
+};
+
 
 export const getUserResumes = async (req, res) => {
     const { id: userId } = req.params; // Assuming the userId is passed as 'id' in the request parameters
